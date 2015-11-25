@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cuidad de Nueva York Parqueo de Bicicleta</string>
+    <string name="button_submit">Si</string>
+    <string name="edit_message">Donde estas?</string>
+    <string name="title_activity_display_bike_racks"></string>
+    <string name="display_location_text">In spanish.</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NYC Bike Parking</string>
+    <string name="button_submit">Wi</string>
+    <string name="edit_message">Où es tu</string>
+</resources>
