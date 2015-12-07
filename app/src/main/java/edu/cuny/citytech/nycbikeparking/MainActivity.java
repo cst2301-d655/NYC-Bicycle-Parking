@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
     }
 
     public void findBikeRacks(View view) {
-        Intent intent = new Intent(this, DisplayBikeRacks.class);
+        Intent intent = new Intent(this, DisplayBikeRacksActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String location = editText.getText().toString();
         intent.putExtra(LOCATION_KEY, location);
