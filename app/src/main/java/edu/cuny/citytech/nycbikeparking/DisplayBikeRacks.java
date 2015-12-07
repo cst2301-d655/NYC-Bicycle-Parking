@@ -17,7 +17,7 @@ public class DisplayBikeRacks extends ActionBarActivity {
 
         TextView textView = new TextView(this);
         textView.setTextSize(40);
-        textView.setText(R.string.display_location_text + ": " + location);
+        textView.setText(getString(R.string.display_location_text) + ": " + location);
         setContentView(textView);
     }
 
