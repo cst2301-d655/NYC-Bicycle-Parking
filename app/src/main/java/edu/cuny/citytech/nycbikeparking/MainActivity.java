@@ -1,21 +1,39 @@
 package edu.cuny.citytech.nycbikeparking;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements LocationInputFragment.OnFragmentInteractionListener {
 
-    public static final String LOCATION_KEY = "edu.cuny.citytech.LOCATION_KEY";
+    private static final String LOCATION_DISPLAY_TAG = "locationDisplayFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // if we're being restored from a previous state,
+        // then we don't need to do anything and should return or else
+        // we could end up with overlapping fragments.
+        if (savedInstanceState != null) {
+            return;
+        }
+
+        // Create an instance of the fragment.
+        LocationInputFragment locationInputFragment = new LocationInputFragment();
+
+        // In case this activity was started with special instructions from an Intent,
+        // pass the Intent's extras to the fragment as arguments
+        locationInputFragment.setArguments(getIntent().getExtras());
+
+        // Add the fragment to the 'fragment_container' FrameLayout
+        getFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, locationInputFragment).commit();
+
     }
 
     @Override
@@ -40,11 +58,28 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void findBikeRacks(View view) {
-        Intent intent = new Intent(this, DisplayBikeRacksActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        String location = editText.getText().toString();
-        intent.putExtra(LOCATION_KEY, location);
-        startActivity(intent);
+    @Override
+    public void onFragmentInteraction(String location) {
+        // The user sent the location.
+        Log.d("main", "Sending location: " + location);
+
+        // See if we have previously created the location display fragment.
+        LocationDisplayFragment locationDisplayFragment =
+                (LocationDisplayFragment) getFragmentManager().findFragmentByTag(LOCATION_DISPLAY_TAG);
+
+        if (locationDisplayFragment != null) { // we have previously created it.
+            // TODO Refresh the list.
+        } else { // otherwise, we can swap fragments with a new one.
+            locationDisplayFragment = LocationDisplayFragment.newInstance(location);
+
+            // start the transaction.
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.fragment_container, locationDisplayFragment, LOCATION_DISPLAY_TAG);
+            transaction.addToBackStack(null);
+
+            // commit.
+            transaction.commit();
+        }
     }
 }
